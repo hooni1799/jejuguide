@@ -3,255 +3,263 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>자율이와 미경이의 제주 3박 4일 — 여행 가이드</title>
-<meta name="description" content="한라산부터 에메랄드빛 제주 동쪽 바다까지, 자율이와 미경이만을 위한 제주 3박4일 여행 가이드">
+<meta name="theme-color" content="#0B6E69">
+<title>자율이와 미경이의 제주 3박 4일</title>
+<meta name="description" content="한라산부터 에메랄드빛 제주 동쪽 바다까지 — 2026.07.17 ~ 07.20 제주 여행 가이드">
 
-<!-- 폰트: Pretendard(본문/UI) + SUIT(디스플레이) -->
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+<!-- 폰트: Pretendard(본문) + SUIT(디스플레이) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
 
-<!-- 아이콘 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Leaflet (지도) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<!-- 지도 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-
-<!-- 스크롤 리빌 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<!-- Swiper (카드 스와이프) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===================== 로딩 화면 ===================== -->
-<div id="loader" class="loader" aria-hidden="true">
-  <div class="loader-wave"></div>
-  <p class="loader-text">제주 바람을 불러오는 중…</p>
+<!-- ══════════════ 로딩 화면 ══════════════ -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-wave">
+    <span></span><span></span><span></span>
+  </div>
+  <p>제주로 떠나는 중…</p>
 </div>
 
-<!-- ===================== 스티키 헤더 ===================== -->
-<header id="stickyHeader" class="sticky-header">
-  <button class="sh-menu" id="menuToggle" aria-label="메뉴 열기"><i class="fa-solid fa-bars"></i></button>
-  <span class="sh-title">자율 &amp; 미경의 제주</span>
-  <span class="sh-day" id="shDay">DAY 1</span>
+<!-- ══════════════ 스티키 헤더 (스크롤 시 등장) ══════════════ -->
+<header id="topbar">
+  <button class="topbar-home" data-goto="home" aria-label="처음으로">
+    <i data-lucide="waves"></i>
+  </button>
+  <div class="topbar-title">
+    <strong id="topbar-label">제주 3박 4일</strong>
+    <span>2026.07.17 – 07.20</span>
+  </div>
+  <span class="topbar-dday" id="dday-chip">D-day</span>
 </header>
 
-<!-- ===================== 사이드 메뉴 (모바일 드로어) ===================== -->
-<nav id="drawer" class="drawer" aria-hidden="true">
-  <div class="drawer-inner">
-    <div class="drawer-head">
-      <span>메뉴</span>
-      <button id="drawerClose" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
+<main id="app">
+
+  <!-- ══════════════ ① 홈 (Hero) ══════════════ -->
+  <section class="page active" id="page-home">
+
+    <div class="hero">
+      <div class="hero-sky"></div>
+      <div class="hero-sun"></div>
+      <div class="hero-clouds"><span></span><span></span><span></span></div>
+      <svg class="hero-birds" viewBox="0 0 400 60" aria-hidden="true">
+        <path class="hero-bird-1" d="M0,10 Q6,2 12,10 Q18,2 24,10"/>
+        <path class="hero-bird-2" d="M40,26 Q45,20 50,26 Q55,20 60,26"/>
+      </svg>
+      <div class="hero-sparkle"></div>
+      <!-- 물결 레이어 (애니메이션) -->
+      <svg class="hero-waves" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+        <path class="wave w1" d="M0,192 C240,140 480,240 720,208 C960,176 1200,96 1440,144 L1440,320 L0,320 Z"/>
+        <path class="wave w2" d="M0,224 C240,180 480,270 720,240 C960,210 1200,150 1440,190 L1440,320 L0,320 Z"/>
+        <path class="wave w3" d="M0,256 C240,220 480,300 720,272 C960,244 1200,200 1440,232 L1440,320 L0,320 Z"/>
+      </svg>
+
+      <div class="hero-inner">
+        <p class="hero-eyebrow reveal-on-load">한라산부터 에메랄드빛 동쪽 바다까지</p>
+        <h1 class="hero-title reveal-on-load">자율이와 미경이의<br>제주 <em>3박 4일</em> 여행</h1>
+        <p class="hero-date reveal-on-load">2026.07.17 <span>—</span> 2026.07.20</p>
+        <div class="hero-dday reveal-on-load" id="hero-dday"></div>
+      </div>
+
+      <button class="hero-scroll" data-goto="plan" aria-label="일정 보기">
+        <span>일정 보러가기</span>
+        <i data-lucide="chevron-down"></i>
+      </button>
     </div>
-    <a href="#hero" class="drawer-link" data-nav>홈</a>
-    <a href="#itinerary" class="drawer-link" data-nav>일정</a>
-    <a href="#map" class="drawer-link" data-nav>지도</a>
-    <a href="#spots" class="drawer-link" data-nav>관광지</a>
-    <a href="#food" class="drawer-link" data-nav>맛집</a>
-    <a href="#cafe" class="drawer-link" data-nav>카페</a>
-    <a href="#scooter" class="drawer-link" data-nav>스쿠터 여행</a>
-    <a href="#hallasan" class="drawer-link" data-nav>한라산</a>
-    <a href="#budget" class="drawer-link" data-nav>예산</a>
-    <a href="#checklist" class="drawer-link" data-nav>준비물</a>
-  </div>
-</nav>
-<div id="drawerScrim" class="drawer-scrim"></div>
 
-<!-- ===================== HERO ===================== -->
-<section id="hero" class="hero">
-  <div class="hero-bg">
-    <div class="hero-gradient"></div>
-    <div class="hero-wave-layer wave1"></div>
-    <div class="hero-wave-layer wave2"></div>
-  </div>
-  <div class="hero-content">
-    <p class="hero-eyebrow" data-aos="fade-down">JEJU · 3박 4일 여행 가이드</p>
-    <h1 class="hero-title">
-      <span>자율이와 미경이의</span>
-      <span class="hero-title-accent">제주 3박 4일 여행</span>
-    </h1>
-    <p class="hero-date">2026.07.17 &nbsp;—&nbsp; 2026.07.20</p>
-    <p class="hero-tagline">한라산부터 에메랄드빛 제주 동쪽 바다까지</p>
-  </div>
-  <button class="hero-scroll" id="heroScroll" aria-label="아래로 스크롤">
-    <span>일정 보러가기</span>
-    <i class="fa-solid fa-chevron-down"></i>
-  </button>
-</section>
+    <!-- 여행 요약 티켓 -->
+    <div class="container">
+      <div class="ticket reveal">
+        <div class="ticket-row">
+          <div>
+            <span class="ticket-label">FROM</span>
+            <strong>인천 · 일상</strong>
+          </div>
+          <i data-lucide="plane" class="ticket-plane"></i>
+          <div class="ta-right">
+            <span class="ticket-label">TO</span>
+            <strong>제주 · 바다</strong>
+          </div>
+        </div>
+        <div class="ticket-perforation"><span></span></div>
+        <div class="ticket-meta">
+          <div><span class="ticket-label">여행자</span><strong>자율 · 미경</strong></div>
+          <div><span class="ticket-label">기간</span><strong>3박 4일</strong></div>
+          <div><span class="ticket-label">베이스캠프</span><strong>함덕</strong></div>
+        </div>
+      </div>
 
-<!-- ===================== 여행 요약 바 ===================== -->
-<section class="summary-strip" data-aos="fade-up">
-  <div class="summary-item"><i class="fa-solid fa-calendar-days"></i><span>3박 4일</span></div>
-  <div class="summary-item"><i class="fa-solid fa-users"></i><span>자율 · 미경</span></div>
-  <div class="summary-item"><i class="fa-solid fa-car"></i><span>렌터카 + 스쿠터</span></div>
-  <div class="summary-item"><i class="fa-solid fa-mountain-sun"></i><span>한라산 등반</span></div>
-</section>
+      <!-- 숙소 카드 -->
+      <button class="stay-card reveal" data-detail="mungkeul">
+        <span class="stay-emoji">🏡</span>
+        <span class="stay-info">
+          <strong>뭉클펜션</strong>
+          <span>함덕 · 체크인 15:00 · 우리의 3박 베이스캠프</span>
+        </span>
+        <i data-lucide="chevron-right"></i>
+      </button>
 
-<!-- ===================== 일정 (타임라인) ===================== -->
-<section id="itinerary" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Itinerary</p>
-    <h2 class="section-title">4일간의 여정</h2>
-    <p class="section-desc">카드를 눌러 상세 일정, 이동시간, 추천 포인트와 여행 팁을 확인하세요.</p>
-  </div>
+      <!-- 하이라이트 퀵링크 -->
+      <h2 class="sec-title reveal">이번 여행의 하이라이트</h2>
+      <div class="quick-grid">
+        <button class="quick-card q-hallasan reveal" data-goto="guide" data-sub="hallasan">
+          <i data-lucide="mountain"></i>
+          <strong>한라산 등반</strong>
+          <span>관음사 원점회귀</span>
+        </button>
+        <button class="quick-card q-scooter reveal" data-goto="guide" data-sub="scooter">
+          <i data-lucide="bike"></i>
+          <strong>동부 스쿠터</strong>
+          <span>함덕 → 비자림 한 바퀴</span>
+        </button>
+        <button class="quick-card q-sunset reveal" data-goto="place" data-detail="seowoobong">
+          <i data-lucide="sunset"></i>
+          <strong>서우봉 노을</strong>
+          <span>여행 셋째 날 저녁</span>
+        </button>
+        <button class="quick-card q-market reveal" data-goto="place" data-detail="dongmun">
+          <i data-lucide="shopping-bag"></i>
+          <strong>동문시장</strong>
+          <span>떠나기 전 마지막 쇼핑</span>
+        </button>
+      </div>
 
-  <div class="day-tabs" id="dayTabs" role="tablist"></div>
+      <!-- 데일리 미리보기 -->
+      <h2 class="sec-title reveal">하루씩 미리보기</h2>
+      <div class="day-preview-list" id="day-preview"></div>
+    </div>
+  </section>
 
-  <div class="timeline" id="timeline"></div>
-</section>
+  <!-- ══════════════ ② 일정 ══════════════ -->
+  <section class="page" id="page-plan">
+    <div class="page-head">
+      <h2>여행 일정</h2>
+      <p>카드를 누르면 이동 시간과 팁이 펼쳐져요.</p>
+    </div>
+    <div class="day-tabs" id="day-tabs" role="tablist"></div>
+    <div class="container">
+      <div class="day-summary" id="day-summary"></div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
 
-<!-- ===================== 지도 ===================== -->
-<section id="map" class="section section-flush">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Map</p>
-    <h2 class="section-title">제주 동선 지도</h2>
-    <p class="section-desc">일정별 동선과 관광지를 지도에서 한눈에 확인하세요.</p>
-  </div>
-  <div class="map-day-filter" id="mapDayFilter"></div>
-  <div id="leafletMap" class="leaflet-map"></div>
-</section>
+  <!-- ══════════════ ③ 지도 ══════════════ -->
+  <section class="page" id="page-map">
+    <div class="page-head">
+      <h2>여행 지도</h2>
+      <p>마커를 누르면 장소 정보가 열려요.</p>
+    </div>
+    <div class="map-filters" id="map-filters">
+      <button class="chip active" data-mfilter="all">전체</button>
+      <button class="chip" data-mfilter="d1">7/17</button>
+      <button class="chip" data-mfilter="d2">7/18</button>
+      <button class="chip" data-mfilter="d3">7/19</button>
+      <button class="chip" data-mfilter="d4">7/20</button>
+      <button class="chip" data-mfilter="scooter">스쿠터 동선</button>
+    </div>
+    <div id="map" aria-label="제주 여행 지도"></div>
+    <div class="container map-legend">
+      <span><i class="dot dot-sea"></i>관광지</span>
+      <span><i class="dot dot-food"></i>맛집·카페</span>
+      <span><i class="dot dot-route"></i>스쿠터 동선</span>
+    </div>
+  </section>
 
-<!-- ===================== 관광지 ===================== -->
-<section id="spots" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Spots</p>
-    <h2 class="section-title">가봐야 할 관광지 12</h2>
-    <p class="section-desc">카드를 눌러 포토스팟, 혼잡도, 여행 팁까지 자세히 확인하세요.</p>
-  </div>
-  <div class="spot-grid" id="spotGrid"></div>
-</section>
+  <!-- ══════════════ ④ 장소 (관광지 / 맛집 / 카페) ══════════════ -->
+  <section class="page" id="page-place">
+    <div class="page-head">
+      <h2>장소</h2>
+      <p>가고 싶은 곳을 저장해 두세요.</p>
+    </div>
+    <div class="sub-tabs" role="tablist">
+      <button class="sub-tab active" data-ptab="spots">관광지</button>
+      <button class="sub-tab" data-ptab="food">맛집</button>
+      <button class="sub-tab" data-ptab="cafe">카페</button>
+    </div>
 
-<!-- ===================== 맛집 ===================== -->
-<section id="food" class="section section-alt">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Restaurants</p>
-    <h2 class="section-title">지역별 맛집</h2>
-    <p class="section-desc">지역을 선택하면 해당 지역 맛집만 모아볼 수 있어요.</p>
-  </div>
-  <div class="chip-filter" id="foodFilter"></div>
-  <div class="food-carousel" id="foodCarousel"></div>
-</section>
+    <div class="ptab-panel active" id="ptab-spots">
+      <div class="container card-grid" id="spot-grid"></div>
+    </div>
 
-<!-- ===================== 카페 ===================== -->
-<section id="cafe" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Cafés</p>
-    <h2 class="section-title">오션뷰 &amp; 감성 카페</h2>
-    <p class="section-desc">오션뷰, 노을, 감성, 디저트 — 취향대로 골라보세요.</p>
-  </div>
-  <div class="chip-filter" id="cafeFilter"></div>
-  <div class="cafe-grid" id="cafeGrid"></div>
-</section>
+    <div class="ptab-panel" id="ptab-food">
+      <div class="region-chips scroll-x" id="food-regions"></div>
+      <div class="container list-col" id="food-list"></div>
+    </div>
 
-<!-- ===================== 스쿠터 여행 ===================== -->
-<section id="scooter" class="section section-alt">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Scooter Trip</p>
-    <h2 class="section-title">제주 동부 스쿠터 코스</h2>
-    <p class="section-desc">함덕 → 김녕 → 월정리 → 세화 → 비자림 → 함덕</p>
-  </div>
-  <div class="scooter-route" id="scooterRoute"></div>
-  <div class="scooter-notes" id="scooterNotes"></div>
-</section>
+    <div class="ptab-panel" id="ptab-cafe">
+      <div class="region-chips scroll-x" id="cafe-moods"></div>
+      <div class="container list-col" id="cafe-list"></div>
+    </div>
+  </section>
 
-<!-- ===================== 한라산 ===================== -->
-<section id="hallasan" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Hallasan</p>
-    <h2 class="section-title">한라산 관음사 원점회귀</h2>
-    <p class="section-desc">제주 여행의 하이라이트, 철저한 준비가 필요해요.</p>
-  </div>
-  <div class="halla-stats" id="hallaStats"></div>
-  <div class="halla-body">
-    <div class="halla-checklist" id="hallaChecklist"></div>
-    <div class="halla-tips" id="hallaTips"></div>
-  </div>
-</section>
+  <!-- ══════════════ ⑤ 가이드 (스쿠터/한라산/서우봉/시장/예산/준비물) ══════════════ -->
+  <section class="page" id="page-guide">
+    <div class="page-head">
+      <h2>여행 가이드</h2>
+      <p>테마별로 꼼꼼하게 준비했어요.</p>
+    </div>
+    <div class="sub-tabs scroll-x" role="tablist">
+      <button class="sub-tab active" data-gtab="scooter"><i data-lucide="bike"></i>스쿠터</button>
+      <button class="sub-tab" data-gtab="hallasan"><i data-lucide="mountain"></i>한라산</button>
+      <button class="sub-tab" data-gtab="sunset"><i data-lucide="sunset"></i>서우봉</button>
+      <button class="sub-tab" data-gtab="market"><i data-lucide="shopping-bag"></i>동문시장</button>
+      <button class="sub-tab" data-gtab="budget"><i data-lucide="wallet"></i>예산</button>
+      <button class="sub-tab" data-gtab="pack"><i data-lucide="check-square"></i>준비물</button>
+    </div>
 
-<!-- ===================== 서우봉 일몰 ===================== -->
-<section id="sunset" class="section section-alt sunset-section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Sunset</p>
-    <h2 class="section-title">서우봉 노을 포인트</h2>
-  </div>
-  <div class="sunset-card" data-aos="zoom-in">
-    <div class="sunset-time"><i class="fa-solid fa-sun"></i><span>7월 일몰 시각 약 19:50 ~ 20:00</span></div>
-    <ul class="sunset-list">
-      <li><i class="fa-solid fa-camera"></i> 정상 억새 능선 — 함덕 해변과 노을이 함께 담기는 최고의 포토스팟</li>
-      <li><i class="fa-solid fa-camera"></i> 봉수대 방향 — 실루엣 인물샷에 좋음</li>
-      <li><i class="fa-solid fa-clock"></i> 일몰 40분 전 도착 추천, 편도 20~30분 산책로</li>
-    </ul>
-  </div>
-</section>
+    <div class="gtab-panel active container" id="gtab-scooter"></div>
+    <div class="gtab-panel container" id="gtab-hallasan"></div>
+    <div class="gtab-panel container" id="gtab-sunset"></div>
+    <div class="gtab-panel container" id="gtab-market"></div>
+    <div class="gtab-panel container" id="gtab-budget"></div>
+    <div class="gtab-panel container" id="gtab-pack"></div>
+  </section>
 
-<!-- ===================== 동문시장 ===================== -->
-<section id="market" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Market</p>
-    <h2 class="section-title">동문시장 쇼핑 가이드</h2>
-  </div>
-  <div class="market-grid" id="marketGrid"></div>
-</section>
+</main>
 
-<!-- ===================== 예산 ===================== -->
-<section id="budget" class="section section-alt">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Budget</p>
-    <h2 class="section-title">2인 기준 예상 예산</h2>
-    <p class="section-desc">3박4일, 2인 기준 대략적인 예상 비용이에요.</p>
-  </div>
-  <div class="budget-list" id="budgetList"></div>
-  <div class="budget-total" id="budgetTotal"></div>
-</section>
+<!-- ══════════════ 상세 바텀시트 ══════════════ -->
+<div id="sheet-backdrop" hidden></div>
+<div id="sheet" role="dialog" aria-modal="true" hidden>
+  <div class="sheet-grip" id="sheet-grip"><span></span></div>
+  <div class="sheet-body" id="sheet-body"></div>
+</div>
 
-<!-- ===================== 준비물 ===================== -->
-<section id="checklist" class="section">
-  <div class="section-head" data-aos="fade-up">
-    <p class="section-eyebrow">Checklist</p>
-    <h2 class="section-title">떠나기 전 체크리스트</h2>
-    <p class="section-desc">체크한 내용은 자동으로 저장돼요.</p>
-  </div>
-  <div class="checklist-progress"><div class="checklist-progress-bar" id="checklistProgress"></div></div>
-  <div class="checklist-grid" id="checklistGrid"></div>
-</section>
-
-<!-- ===================== 푸터 ===================== -->
-<footer class="footer">
-  <p>자율이 &amp; 미경이의 제주 3박 4일 · 2026.07.17 – 07.20</p>
-  <p class="footer-sub">한라산부터 에메랄드빛 제주 동쪽 바다까지 🌊</p>
-</footer>
-
-<!-- ===================== 하단 내비게이션 ===================== -->
-<nav class="bottom-nav" id="bottomNav">
-  <a href="#hero" class="bn-item active" data-bn="hero"><i class="fa-solid fa-house"></i><span>홈</span></a>
-  <a href="#itinerary" class="bn-item" data-bn="itinerary"><i class="fa-solid fa-timeline"></i><span>일정</span></a>
-  <a href="#map" class="bn-item" data-bn="map"><i class="fa-solid fa-map-location-dot"></i><span>지도</span></a>
-  <a href="#food" class="bn-item" data-bn="food"><i class="fa-solid fa-utensils"></i><span>맛집</span></a>
-  <a href="#checklist" class="bn-item" data-bn="checklist"><i class="fa-solid fa-list-check"></i><span>준비물</span></a>
-</nav>
-
-<!-- ===================== FAB ===================== -->
-<button id="fab" class="fab" aria-label="빠른 메뉴">
-  <i class="fa-solid fa-plus" id="fabIcon"></i>
+<!-- ══════════════ FAB : 오늘 일정으로 ══════════════ -->
+<button id="fab" aria-label="위로 가기">
+  <i data-lucide="arrow-up"></i>
 </button>
-<div id="fabMenu" class="fab-menu">
-  <a href="#hallasan" class="fab-menu-item" data-nav><i class="fa-solid fa-mountain-sun"></i><span>한라산</span></a>
-  <a href="#scooter" class="fab-menu-item" data-nav><i class="fa-solid fa-motorcycle"></i><span>스쿠터</span></a>
-  <a href="#budget" class="fab-menu-item" data-nav><i class="fa-solid fa-wallet"></i><span>예산</span></a>
-  <button id="fabTop" class="fab-menu-item"><i class="fa-solid fa-arrow-up"></i><span>맨 위로</span></button>
-</div>
 
-<!-- ===================== 관광지/맛집/카페 상세 모달 ===================== -->
-<div id="detailScrim" class="detail-scrim"></div>
-<div id="detailSheet" class="detail-sheet" role="dialog" aria-modal="true">
-  <div class="detail-handle"></div>
-  <button id="detailClose" class="detail-close" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
-  <div id="detailBody" class="detail-body"></div>
-</div>
+<!-- ══════════════ 하단 내비게이션 ══════════════ -->
+<nav id="bottom-nav">
+  <button class="nav-item active" data-goto="home">
+    <i data-lucide="home"></i><span>홈</span>
+  </button>
+  <button class="nav-item" data-goto="plan">
+    <i data-lucide="calendar-days"></i><span>일정</span>
+  </button>
+  <button class="nav-item" data-goto="map">
+    <i data-lucide="map"></i><span>지도</span>
+  </button>
+  <button class="nav-item" data-goto="place">
+    <i data-lucide="map-pin"></i><span>장소</span>
+  </button>
+  <button class="nav-item" data-goto="guide">
+    <i data-lucide="compass"></i><span>가이드</span>
+  </button>
+</nav>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<!-- 라이브러리 -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
