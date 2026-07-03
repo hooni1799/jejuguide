@@ -225,6 +225,18 @@ const FOODS = [
     hours:'10:00–20:00(확인)', brk:'재료 소진 시 마감', price:'1인 1만원 내외', rate:'가볍게 한 끼',
     why:'해변 바로 앞 로컬 국수집. 부담 없는 가격대라 이동 중 가볍게 들르기 좋아요.',
     wait:'보통', rsv:'불가(현장)', tags:['함덕 인근','가성비'] },
+  { name:'함덕 큰물횟집', region:'함덕', menu:'모둠회 · 매운탕', emoji:'🐟', color:'#E3F4F1',
+    hours:'11:00–22:00(확인)', brk:'없음', price:'2인 8~10만원', rate:'해변 앞 오션뷰 횟집',
+    why:'함덕해수욕장을 바라보며 즐기는 제철 회 한 상. 매운탕까지 든든하게 마무리하기 좋아요.',
+    wait:'저녁 웨이팅', rsv:'전화 권장', tags:['함덕 인근','오션뷰','횟집'] },
+  { name:'함덕 근고기명가', region:'함덕', menu:'흑돼지 근고기', emoji:'🥩', color:'#FFE4D6',
+    hours:'12:00–23:00(확인)', brk:'브레이크 있음(확인)', price:'2인 6~8만원', rate:'숙소 근처 저녁 고기집',
+    why:'뭉클펜션에서 도보로 이동 가능한 흑돼지 근고기 전문점. 흑본오겹이 붐빌 때 대안으로 좋아요.',
+    wait:'저녁 웨이팅', rsv:'전화 예약 가능', tags:['함덕 인근','숙소 도보권','고기'] },
+  { name:'함덕 어부의딸', region:'함덕', menu:'전복해물뚝배기 · 회덮밥', emoji:'🦐', color:'#EAF4EE',
+    hours:'10:30–21:00(확인)', brk:'브레이크 있음(확인)', price:'1인 1.5~2만원', rate:'가볍게 즐기는 해산물',
+    why:'회 한 접시가 부담스러운 날엔 해물뚝배기나 회덮밥으로 가볍게. 가족 단위로도 무난해요.',
+    wait:'보통', rsv:'불가(현장)', tags:['함덕 인근','해산물'] },
   { name:'곰막식당', region:'김녕', menu:'회국수 · 성게국수', emoji:'🍜', color:'#E3F4F1',
     hours:'낮 영업 (방문 전 확인)', brk:'재료 소진 시 마감', price:'1인 1만원대', rate:'스쿠터 코스 별미',
     why:'김녕–동복 해안도로의 회국수 맛집. 라이딩 중 시원한 국수 한 그릇으로 완벽한 중간 보급.',
@@ -348,11 +360,22 @@ const BUDGET = [
 
 /* 준비물 (엑셀 ④시트 + 보강) */
 const PACK = [
-  { group:'한라산 등산', items:[
-    { id:'boots', name:'등산화', note:'필수' },
+  { group:'여행 필수품', items:[
+    { id:'idcard', name:'신분증 (주민등록증·운전면허증)', note:'탑승수속·렌터카·탐방예약 공용 필수' },
+    { id:'ticket', name:'항공권 · 예약 확인증', note:'전자티켓 캡처 또는 출력' },
+    { id:'charger', name:'휴대폰 충전기 · 보조배터리', note:'멀티탭 있으면 편해요' },
+    { id:'cash', name:'현금 · 카드', note:'전통시장·소규모 식당 대비' },
+    { id:'toiletry', name:'개인 세면도구 · 상비약', note:'두통약·소화제·밴드' },
+    { id:'clothes', name:'여벌 옷 · 속옷', note:'땀·물놀이 대비 넉넉히' },
+  ]},
+  { group:'한라산 등산 (필수)', items:[
+    { id:'boots', name:'등산화', note:'필수 — 운동화 비추천' },
     { id:'stick', name:'등산스틱', note:'하산 무릎 보호' },
-    { id:'rain', name:'우비', note:'산 날씨 대비' },
-    { id:'snack', name:'행동식 (초콜릿·에너지바)', note:'등반 중 보급' },
+    { id:'water', name:'물 1.5L 이상', note:'등반 중 수분 보충 필수' },
+    { id:'snack', name:'행동식 (초콜릿·에너지바·주먹밥)', note:'등반 중 보급' },
+    { id:'rain', name:'우비 · 바람막이', note:'산 날씨 대비 필수' },
+    { id:'cap', name:'모자 · 선크림', note:'정상부 강한 자외선' },
+    { id:'reservation', name:'탐방예약 확인 QR', note:'입산 시 신분증과 함께 확인' },
   ]},
   { group:'스쿠터 라이딩', items:[
     { id:'license', name:'운전면허증', note:'렌터카+스쿠터 공용' },
@@ -803,6 +826,9 @@ function drawMarkers(filter){
 /* ─────────────────────────────────────────────
    6. 라우터 & 이벤트
 ────────────────────────────────────────────── */
+let pageHistory = [];               // 뒤로가기 스택 (드릴다운 이동만 기록)
+let currentPageState = { page:'home', opt:{} };
+
 function goto(page, opt={}){
   $$('.page').forEach(p=>p.classList.toggle('active', p.id==='page-'+page));
   $$('#bottom-nav .nav-item').forEach(n=>n.classList.toggle('active', n.dataset.goto===page));
@@ -816,6 +842,16 @@ function goto(page, opt={}){
   if(page==='place' && opt.sub) switchPTab(opt.sub);
   if(page==='guide' && opt.sub) switchGTab(opt.sub);
   observeReveals();
+}
+function updateBackButton(){
+  $('#btn-back').classList.toggle('show', pageHistory.length > 0);
+}
+function goBack(){
+  const prev = pageHistory.pop();
+  if(!prev) return;
+  goto(prev.page, prev.opt);
+  currentPageState = prev;
+  updateBackButton();
 }
 function switchPTab(tab){
   $$('.sub-tab[data-ptab]').forEach(b=>b.classList.toggle('active', b.dataset.ptab===tab));
@@ -836,7 +872,16 @@ document.addEventListener('click', e=>{
   /* 페이지 이동 버튼 */
   const go = t.closest('[data-goto]');
   if(go){
-    goto(go.dataset.goto, { day:go.dataset.day, sub:go.dataset.sub });
+    const isPrimaryNav = !!go.closest('#bottom-nav');
+    const nextOpt = { day:go.dataset.day, sub:go.dataset.sub };
+    if(isPrimaryNav){
+      pageHistory = [];   // 하단 탭 이동은 새로운 최상위 이동 — 뒤로가기 스택 초기화
+    } else if(currentPageState.page !== go.dataset.goto || JSON.stringify(currentPageState.opt) !== JSON.stringify(nextOpt)){
+      pageHistory.push(currentPageState); // 콘텐츠에서 드릴다운한 이동만 기록
+    }
+    goto(go.dataset.goto, nextOpt);
+    currentPageState = { page: go.dataset.goto, opt: nextOpt };
+    updateBackButton();
     if(go.dataset.detail) setTimeout(()=>openSheet(go.dataset.detail), 350);
     return;
   }
@@ -928,6 +973,10 @@ function init(){
 
   icons();
   observeReveals();
+
+  /* 뒤로가기 버튼 */
+  $('#btn-back').addEventListener('click', goBack);
+  updateBackButton();
 
   /* 스티키 헤더 초기 상태 (홈이 아닐 때 항상 표시) */
   window.dispatchEvent(new Event('scroll'));

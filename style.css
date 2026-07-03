@@ -95,6 +95,14 @@ i[data-lucide], svg.lucide{ width:20px; height:20px; stroke-width:2; flex:none; 
   background:var(--sea-deep); color:#fff;
   display:grid; place-items:center;
 }
+.topbar-back{
+  width:38px; height:38px; border-radius:12px; flex:none;
+  background:var(--foam); color:var(--sea-deep);
+  display:none; align-items:center; justify-content:center;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.topbar-back.show{ display:grid; }
+.topbar-back:active{ transform:scale(.88); }
 .topbar-title{ flex:1; line-height:1.25; }
 .topbar-title strong{ display:block; font-size:15px; }
 .topbar-title span{ font-size:11.5px; color:var(--ink-soft); }
